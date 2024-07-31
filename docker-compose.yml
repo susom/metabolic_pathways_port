@@ -1,0 +1,14 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./interactive-pathways
+      dockerfile: Dockerfile
+    ports:
+      - "88:80"
+  backend:
+    build:
+      context: ./interactive-pathways-api
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8080"
