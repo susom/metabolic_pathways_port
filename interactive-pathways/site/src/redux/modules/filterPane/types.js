@@ -1,0 +1,5 @@
+export default {
+  'UPDATE_FILTER': 'filterPane/UPDATE_FILTER',
+  'RESET_FILTER': 'filterPane/RESET_FILTER',
+  'PLACEHOLDER_SWITCH_FILTER': 'filterPane/PLACEHOLDER_SWITCH_FILTER',
+};

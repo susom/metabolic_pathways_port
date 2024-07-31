@@ -1,0 +1,17 @@
+/*******************************
+     User Global Variables
+*******************************/
+
+@pageFont          : 'Source Sans Pro', sans-serif;
+@headerFont        : 'Source Sans Pro', sans-serif;
+@googleFontName    : 'Source Sans Pro';
+
+@primaryColor : #8c1515;
+
+@screen-xs-size: 500px;
+@screen-sx-size: 750px;
+@screen-s-size: 860px;
+@screen-m-size: 1220px;
+@screen-l-size: 1580px;
+
+@toolbar-mobile-height: 45vh;

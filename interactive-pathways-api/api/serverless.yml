@@ -1,0 +1,30 @@
+service: interactive-path-api
+
+provider:
+  name: aws
+  runtime: go1.x
+  stage: ${opt:stage, 'dev'}
+  region: us-west-2
+  profile: ${file(./config.${self:provider.stage}.yml):profileName}
+
+  environment:
+    # Access-Control-Allow-Origin
+    CORS_ALLOW_ORIGIN:
+      ${file(./config.${self:provider.stage}.yml):corsConfig.origin}
+
+package:
+ exclude:
+   - ./**
+ include:
+   - ./bin/**
+
+functions:
+  svgConvert:
+    handler: bin/svgConvert
+    layers:
+      - ${file(./config.${self:provider.stage}.yml):layerArn}
+    events:
+      - http:
+          path: svgconvert
+          method: post
+          cors: ${file(./config.${self:provider.stage}.yml):corsConfig}

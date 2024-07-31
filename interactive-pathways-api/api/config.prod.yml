@@ -1,0 +1,9 @@
+profileName: cardinal
+
+layerArn: arn:aws:lambda:us-west-2:505433269497:layer:rsvg-convert:1
+
+corsConfig:
+  origin: '*'
+  headers:
+    - Content-Type
+  allowCredentials: false

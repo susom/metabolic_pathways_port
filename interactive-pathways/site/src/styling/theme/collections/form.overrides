@@ -1,0 +1,12 @@
+/*******************************
+         Site Overrides
+*******************************/
+
+form.ui.form {
+  max-height: @toolbar-mobile-height;
+  overflow-y: auto;
+
+  @media screen and (min-height: @screen-sx-size) {
+    max-height: none;
+  }
+}

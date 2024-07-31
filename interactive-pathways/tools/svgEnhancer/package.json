@@ -1,0 +1,19 @@
+{
+  "name": "svgEnhancer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "rm -rf out && mkdir out && node extractSpreadsheet.js && node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "googleapis": "^27.0.0",
+    "jsdom": "^12.0.0",
+    "ramda": "^0.25.0",
+    "underscore.string.fp": "^1.0.4"
+  }
+}

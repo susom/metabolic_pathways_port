@@ -1,0 +1,28 @@
+image: node:latest
+
+before_script:
+    - cd site
+    
+stages:
+  - install
+  - test
+  
+cache:
+  paths:
+    - site/node_modules/
+
+install_dependencies:
+  stage: install
+  script:
+    - sudo npm -g i npm@latest
+    - npm ci
+  only:
+    - merge_requests
+
+test_with_lab:
+  stage: test
+  script:
+    - npm test
+  only:
+    - merge_requests
+
