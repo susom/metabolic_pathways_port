@@ -2,16 +2,16 @@ import {
   connect,
 } from 'react-redux';
 
-import storeNames from 'redux/modules/storeNames';
+import storeNames from 'reduxLocal/modules/storeNames';
 
-import focusStoreKeys from 'redux/modules/focusPane/storeKeys';
+import focusStoreKeys from 'reduxLocal/modules/focusPane/storeKeys';
 
 import {
   resetFocus,
   switchFastingState,
   switchFedState,
   updateFocus,
-} from 'redux/modules/focusPane/actions';
+} from 'reduxLocal/modules/focusPane/actions';
 
 import FocusPane from './components/index';
 

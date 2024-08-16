@@ -1,9 +1,18 @@
-import React from 'react';
-import {
-  Loader,
-} from 'semantic-ui-react';
-import ReactDelayRender from 'react-delay-render';
+import React, { useState, useEffect } from 'react';
+import { Loader } from 'semantic-ui-react';
 
-const Loading = () => <Loader active size="massive" />;
+const Loading = () => {
+  const [showLoader, setShowLoader] = useState(false);
 
-export default ReactDelayRender({ delay: 300, })(Loading);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoader(true);
+    }, 300);
+
+    return () => clearTimeout(timer); // Cleanup if the component unmounts
+  }, []);
+
+  return showLoader ? <Loader active size="massive" /> : null;
+};
+
+export default Loading;

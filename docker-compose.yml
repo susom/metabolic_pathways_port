@@ -1,4 +1,5 @@
-version: '3'
+version: '3.8'
+
 services:
   frontend:
     build:
@@ -6,9 +7,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - "88:80"
+    depends_on:
+      - backend # Ensure backend starts first
+
   backend:
     build:
       context: ./interactive-pathways-api
       dockerfile: Dockerfile
     ports:
       - "8888:8080"
+    environment:
+      - ENV_VAR_NAME=production  # Add any environment variables if needed

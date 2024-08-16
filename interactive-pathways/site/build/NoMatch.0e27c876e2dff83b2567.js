@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmetabolic_pathways_site=self.webpackChunkmetabolic_pathways_site||[]).push([[273],{962:(e,t,n)=>{n.r(t),n.d(t,{default:()=>s});var a=n(6540),l=n(5907);const s=function(){return a.createElement("div",null,a.createElement(l.A,{name:"minus circle",size:"big"}),a.createElement("strong",null,"Page not found!"))}}}]);

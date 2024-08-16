@@ -2,15 +2,15 @@ import {
   connect,
 } from 'react-redux';
 
-import storeNames from 'redux/modules/storeNames';
+import storeNames from 'reduxLocal/modules/storeNames';
 
-import filterStoreKeys from 'redux/modules/filterPane/storeKeys';
+import filterStoreKeys from 'reduxLocal/modules/filterPane/storeKeys';
 
 import {
   updateFilter,
   switchFilterPlaceholders,
   resetFilter,
-} from 'redux/modules/filterPane/actions';
+} from 'reduxLocal/modules/filterPane/actions';
 
 import FilterPane from './components/index';
 

@@ -5,9 +5,9 @@ import {
 import {
   closeSidebar,
   openSidebar,
-} from 'redux/modules/sidebar/actions';
+} from 'reduxLocal/modules/sidebar/actions';
 
-import storeNames from 'redux/modules/storeNames';
+import storeNames from 'reduxLocal/modules/storeNames';
 
 import Component from './components';
 

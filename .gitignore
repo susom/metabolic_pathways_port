@@ -6,6 +6,8 @@ yarn-error.log
 # React build
 /build
 
+credentials.json
+
 # Go binaries
 *.exe
 *.exe~

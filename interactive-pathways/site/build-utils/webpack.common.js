@@ -1,18 +1,15 @@
 const commonPaths = require('./common-paths');
-
 const path = require('path');
-
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
 require('dotenv').config();
 
 const devMode = process.env.NODE_ENV !== 'production';
 
 const GLOBALS = {
   'process.env': {
-    'NODE_ENV': JSON.stringify('development'),
+    'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     'API_URL': JSON.stringify(process.env.API_URL),
   }
 };
@@ -62,8 +59,6 @@ const config = {
           loader: 'awesome-typescript-loader',
         },
       },
-      // Images
-      // Inline base64 URLs for <=8k images, direct URLs for the rest
       {
         test: /\.(png|jpg|jpeg|gif)$/,
         use: [{
@@ -74,14 +69,12 @@ const config = {
           }
         }],
       },
-      // html
       {
         test: /\.html$/,
         use: {
           loader: 'raw-loader',
         },
       },
-      // fonts
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
         use: [{
@@ -92,7 +85,6 @@ const config = {
           }
         }],
       },
-      // styles
       {
         test: /\.less$/,
         use: [
@@ -108,7 +100,12 @@ const config = {
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
-          'sass-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+            },
+          },
         ],
       },
     ]
