@@ -1,4 +1,11 @@
 steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud secrets versions access latest --secret="credentials-json" > ./interactive-pathways/credentials.json
+
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend:latest', './interactive-pathways']
 
