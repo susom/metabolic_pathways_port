@@ -7,11 +7,22 @@ WORKDIR /app
 # Copy the entire project directory
 COPY . .
 
-# Make sure the script is executable
-RUN chmod +x /app/site-build.sh
-
 # Install bash
 RUN apk add --no-cache bash
+
+# Install dependencies for reactionSheetReader
+WORKDIR /app/tools/reactionSheetReader
+RUN npm ci --legacy-peer-deps
+
+# Install dependencies for svgEnhancer
+WORKDIR /app/tools/svgEnhancer
+RUN npm ci --legacy-peer-deps
+
+# Return to the main app directory
+WORKDIR /app
+
+# Make sure the script is executable
+RUN chmod +x /app/site-build.sh
 
 # Modify npm install command in site-build.sh to use --legacy-peer-deps
 RUN sed -i 's/npm ci/npm ci --legacy-peer-deps/g' /app/site-build.sh
