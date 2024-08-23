@@ -1,26 +1,30 @@
 # Use an official Node.js runtime as a parent image
-FROM node:16-alpine as build
+FROM node:16-alpine AS build-stage
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the package.json and package-lock.json to the container
-COPY site/package*.json ./
+# Copy the entire project directory
+COPY . .
 
-# Install any needed packages
-RUN npm install --legacy-peer-deps
+# Make sure the script is executable
+RUN chmod +x /app/site-build.sh
 
-# Copy the rest of the application code to the container
-COPY site/ .
+# Install bash
+RUN apk add --no-cache bash
 
-# Build the application
-RUN npm run build
+# Modify npm install command in site-build.sh to use --legacy-peer-deps
+RUN sed -i 's/npm ci/npm ci --legacy-peer-deps/g' /app/site-build.sh
+RUN sed -i 's/npm install/npm install --legacy-peer-deps/g' /app/site-build.sh
+
+# Run the build script
+RUN /bin/bash /app/site-build.sh
 
 # Use a second stage with a smaller image for serving the app
 FROM nginx:stable-alpine
 
 # Copy the build output to the nginx html directory
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build-stage /app/site/build /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
