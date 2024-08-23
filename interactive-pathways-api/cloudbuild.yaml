@@ -1,0 +1,6 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/backend', './interactive-pathways-api']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['run', 'deploy', 'interactive-pathways-api', '--image', 'gcr.io/$PROJECT_ID/backend', '--platform', 'managed']
