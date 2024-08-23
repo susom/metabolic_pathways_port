@@ -3,4 +3,4 @@ steps:
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/frontend', './interactive-pathways']
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['app', 'deploy', '--image-url', 'gcr.io/$PROJECT_ID/frontend']
+    args: ['app', 'deploy', '--image-url', 'gcr.io/$PROJECT_ID/frontend', '--quiet']
