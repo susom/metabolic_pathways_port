@@ -4,3 +4,6 @@ steps:
 
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['run', 'deploy', 'interactive-pathways-api', '--image', 'gcr.io/$PROJECT_ID/backend', '--platform', 'managed', '--region', 'us-central1', '--quiet']
+
+options:
+  logging: CLOUD_LOGGING_ONLY
