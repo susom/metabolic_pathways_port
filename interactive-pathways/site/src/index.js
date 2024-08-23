@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 
 import { create as createJss } from 'jss';
@@ -41,17 +40,15 @@ export const store = configureStore(initialState);
 /** Retrackable copyright footer code in 0bc5b77 */
 
 const render = (Component) =>
-    ReactDOM.render(
-        // eslint-disable-line react/no-render-return-value
-        <AppContainer>
-          <JssProvider jss={jss} generateId={createGenerateId()}>
-            <Provider store={store}>
-              <Component />
-            </Provider>
-          </JssProvider>
-        </AppContainer>,
-        document.getElementById('root')
-    );
+  ReactDOM.render(
+    // eslint-disable-line react/no-render-return-value
+    <JssProvider jss={jss} generateId={createGenerateId()}>
+      <Provider store={store}>
+        <Component />
+      </Provider>
+    </JssProvider>,
+    document.getElementById('root')
+  );
 
 render(App);
 if (module.hot) module.hot.accept('./pages', () => render(App));

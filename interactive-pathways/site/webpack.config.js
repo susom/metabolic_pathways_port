@@ -10,7 +10,7 @@ module.exports = (env, argv) => {
         entry: './src/index.js',
         output: {
             path: path.resolve(__dirname, 'build'),
-            filename: isProduction ? '[name].[contenthash].js' : 'bundle.js',
+            filename: '[name].[contenthash].js',
         },
         module: {
             rules: [
@@ -22,7 +22,7 @@ module.exports = (env, argv) => {
                 {
                     test: /\.css$/,
                     use: [
-                        isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+                        MiniCssExtractPlugin.loader,
                         'css-loader'
                     ],
                 },
@@ -53,9 +53,9 @@ module.exports = (env, argv) => {
                 'process.env.NODE_ENV': JSON.stringify(argv.mode || 'development'),
                 'process.env.API_URL': JSON.stringify(process.env.API_URL || 'http://backend:8080'),
             }),
-            ...(isProduction ? [new MiniCssExtractPlugin({
+            new MiniCssExtractPlugin({
                 filename: '[name].[contenthash].css',
-            })] : []),
+            }),
         ],
         resolve: {
             extensions: ['.js', '.jsx'],
