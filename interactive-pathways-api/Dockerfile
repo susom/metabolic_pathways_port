@@ -15,11 +15,11 @@ FROM debian:bullseye-slim
 
 WORKDIR /root/
 COPY --from=build /app/main .
-COPY --from=build /app/bin /root/bin
 
 # Install rsvg-convert
 RUN apt-get update && apt-get install -y librsvg2-bin
 
+# Expose the port on which the application will run
 EXPOSE 8080
 
 CMD ["./main"]
