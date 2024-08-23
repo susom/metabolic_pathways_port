@@ -4,13 +4,10 @@ import (
 	"bytes"
 	"encoding/base64"
 	"encoding/json"
-	"interactive-pathways-api/lib"
 	"io"
+	"net/http"
 	"os"
 	"os/exec"
-
-	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
 )
 
 type svgRequest struct {
@@ -21,24 +18,21 @@ type pngResponse struct {
 	Png string `json:"png"`
 }
 
-type Request events.APIGatewayProxyRequest
-
-func Handler(req Request) (events.APIGatewayProxyResponse, error) {
-	svgJson := new(svgRequest)
-	err := json.Unmarshal([]byte(req.Body), svgJson)
+func handler(w http.ResponseWriter, r *http.Request) {
+	var svgJson svgRequest
+	err := json.NewDecoder(r.Body).Decode(&svgJson)
 	if err != nil {
-		return lib.SendError(err)
+		http.Error(w, "Failed to parse request body", http.StatusBadRequest)
+		return
 	}
 
 	cmd := exec.Command("rsvg-convert", "-f", "png")
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
-		return lib.SendError(err)
+		http.Error(w, "Failed to create stdin pipe", http.StatusInternalServerError)
+		return
 	}
-	cmd.Env = append(
-		os.Environ(),
-		"FONTCONFIG_PATH=./bin/assets",
-	)
+	cmd.Env = append(os.Environ(), "FONTCONFIG_PATH=./bin/assets")
 
 	go func() {
 		defer stdin.Close()
@@ -47,27 +41,37 @@ func Handler(req Request) (events.APIGatewayProxyResponse, error) {
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		return lib.SendError(err)
+		http.Error(w, "Failed to create stdout pipe", http.StatusInternalServerError)
+		return
 	}
 
 	if err := cmd.Start(); err != nil {
-		return lib.SendError(err)
+		http.Error(w, "Failed to start command", http.StatusInternalServerError)
+		return
 	}
 
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(stdout)
-	sEnc := base64.StdEncoding.EncodeToString([]byte(buf.String()))
-
-	pngResponse := new(pngResponse)
-	pngResponse.Png = "data:image/png;base64," + sEnc
+	sEnc := base64.StdEncoding.EncodeToString(buf.Bytes())
 
 	if err := cmd.Wait(); err != nil {
-		return lib.SendError(err)
+		http.Error(w, "Failed to wait for command completion", http.StatusInternalServerError)
+		return
 	}
 
-	return lib.SendResponse(pngResponse)
+	pngResp := pngResponse{
+		Png: "data:image/png;base64," + sEnc,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(pngResp)
 }
 
 func main() {
-	lambda.Start(Handler)
+	http.HandleFunc("/svgconvert", handler)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	http.ListenAndServe(":"+port, nil)
 }

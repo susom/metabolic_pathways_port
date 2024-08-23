@@ -1,9 +1,0 @@
-profileName: development
-
-layerArn: arn:aws:lambda:us-west-2:109053168280:layer:rsvg-convert:1
-
-corsConfig:
-  origin: 'http://su-interactive-pathways.s3-website-us-west-2.amazonaws.com'
-  headers:
-    - Content-Type
-  allowCredentials: false
