@@ -1,25 +1,25 @@
-FROM golang:1.18-alpine AS build
+# Build stage
+FROM golang:1.18 AS build
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy go.mod and go.sum from the appropriate directory
 COPY api/go.mod api/go.sum ./
-
-# Download dependencies
 RUN go mod download
 
-# Copy the rest of the application code from the correct directory
 COPY api/ .
 
-# Build the Go application
 RUN go build -o main ./svgConvert/main.go
 
-# Use a minimal image for running the Go application
-FROM alpine:latest
+# Final stage: use Debian slim image
+FROM debian:bullseye-slim
 
 WORKDIR /root/
 COPY --from=build /app/main .
+COPY --from=build /app/bin /root/bin
 
-# Command to run the application
+# Install rsvg-convert
+RUN apt-get update && apt-get install -y librsvg2-bin
+
+EXPOSE 8080
+
 CMD ["./main"]
