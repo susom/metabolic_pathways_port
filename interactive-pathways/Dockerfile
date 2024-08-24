@@ -22,9 +22,6 @@ WORKDIR /app
 # Copy the rest of the project files
 COPY . .
 
-# Copy credentials.json to the svgEnhancer directory
-COPY credentials.json /app/tools/svgEnhancer/
-
 # Run the build script with sh
 RUN chmod +x /app/site-build.sh && /bin/sh /app/site-build.sh
 
