@@ -4,32 +4,23 @@ FROM node:16-alpine AS build-stage
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the entire project directory
-COPY . .
+# Copy the package files first (leverage Docker caching)
+COPY site/package*.json ./site/
 
-# Install bash
-RUN apk add --no-cache bash
+# Change directory to `site` before running npm ci
+WORKDIR /app/site
 
-# Install dependencies for reactionSheetReader
-WORKDIR /app/tools/reactionSheetReader
-RUN npm ci --legacy-peer-deps
-
-# Install dependencies for svgEnhancer
-WORKDIR /app/tools/svgEnhancer
+# Install dependencies
 RUN npm ci --legacy-peer-deps
 
 # Return to the main app directory
 WORKDIR /app
 
-# Make sure the script is executable
-RUN chmod +x /app/site-build.sh
+# Copy the rest of the project files
+COPY . .
 
-# Modify npm install command in site-build.sh to use --legacy-peer-deps
-RUN sed -i 's/npm ci/npm ci --legacy-peer-deps/g' /app/site-build.sh
-RUN sed -i 's/npm install/npm install --legacy-peer-deps/g' /app/site-build.sh
-
-# Run the build script
-RUN /bin/bash /app/site-build.sh
+# Run the build script with sh
+RUN chmod +x /app/site-build.sh && /bin/sh /app/site-build.sh
 
 # Use a second stage with a smaller image for serving the app
 FROM nginx:stable-alpine

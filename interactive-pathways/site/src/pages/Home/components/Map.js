@@ -80,9 +80,8 @@ class MapComponent extends PureComponent {
                 const tag = document.getElementById(svgId);
                 const strSvg = tag.outerHTML;
 
-                const body = JSON.stringify({ svg: strSvg });
-
-                map(ele => (ele.style = ""), cycleCovers);
+                console.log('Preparing to send SVG for conversion:', strSvg);
+                console.log('API URL:', `${siteConfig.URL}/${siteConfig.svgEndpoint}`);
 
                 axios
                     .post(
@@ -90,15 +89,21 @@ class MapComponent extends PureComponent {
                         { svg: strSvg },
                         { 'Content-Type': 'application/json' }
                     )
-                    .then(({ data: { png } }) => png)
+                    .then(({ data: { png } }) => {
+                        console.log('Received PNG data:', png);
+                        return png;
+                    })
                     .then(fetch)
                     .then(res => res.blob())
                     .then(blob => saveAs(blob, siteConfig.downloadFileName))
-                    .catch(console.error)
+                    .catch(error => {
+                        console.error('Error during SVG conversion:', error);
+                    })
                     .finally(() => {
                         this.setState({ takingScreenshot: false });
                     });
             });
+
 
         // Zoom in Button
         select(document.getElementById(zoomInId)).on('click', () =>

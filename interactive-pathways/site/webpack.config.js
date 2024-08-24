@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env, argv) => {
     const isProduction = argv.mode === 'production';
+    const isDevelopment = !isProduction;
 
     return {
         entry: './src/index.js',
@@ -15,7 +16,7 @@ module.exports = (env, argv) => {
         module: {
             rules: [
                 {
-                    test: /\.js$/,
+                    test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
                     use: 'babel-loader',
                 },
@@ -37,12 +38,11 @@ module.exports = (env, argv) => {
                 {
                     test: /\.scss$/,
                     use: [
-                        MiniCssExtractPlugin.loader,
+                        isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
                         'css-loader',
                         'sass-loader'
                     ],
                 },
-
             ],
         },
         plugins: [
@@ -67,5 +67,8 @@ module.exports = (env, argv) => {
             }
         },
         mode: isProduction ? 'production' : 'development',
+        devServer: {
+            hot: true,  // Enable hot module replacement
+        },
     };
 };
