@@ -6,25 +6,30 @@ echo &&
 echo "Copying latest SVG file from project root." &&
 echo &&
 
-cd $PROJ_DIR/tools/svgEnhancer/ &&
-# for complete automation put `credentials.json` and `token.json` here.
-# svgEnhancer won't work without these files from the google sheet API.
-# Probably should copy from S3 bucket.
+cd $PROJ_DIR/tools/svgEnhancer/
 
-echo &&
-echo "Creating JSON data and enhanced SVG." &&
-echo &&
+# Check if credentials.json exists before proceeding
+if [ -f "credentials.json" ]; then
+  echo "credentials.json found, proceeding with SVG enhancement."
 
-npm ci &&
-npm start &&
+  echo &&
+  echo "Creating JSON data and enhanced SVG." &&
+  echo &&
 
-echo &&
-echo "Moving JSON data and Enhanced SVG into site project." &&
-echo &&
+  npm ci &&
+  npm start &&
 
-mv -fv $PROJ_DIR/tools/svgEnhancer/out/* $PROJ_DIR/site/src/assets/ &&
+  echo &&
+  echo "Moving JSON data and Enhanced SVG into site project." &&
+  echo &&
 
-cd $PROJ_DIR/site/ &&
+  mv -fv $PROJ_DIR/tools/svgEnhancer/out/* $PROJ_DIR/site/src/assets/
+
+else
+  echo "credentials.json not found, skipping SVG enhancement."
+fi
+
+cd $PROJ_DIR/site/
 
 echo &&
 echo "Building site." &&
