@@ -28,6 +28,16 @@ RUN chmod +x /app/site-build.sh && /bin/sh /app/site-build.sh
 # Use a second stage with a smaller image for serving the app
 FROM nginx:stable-alpine
 
+# Set up the Nginx configuration to use the PORT environment variable
+RUN echo "server { \
+    listen 8080; \
+    root /usr/share/nginx/html; \
+    index index.html; \
+    location / { \
+        try_files \$uri \$uri/ /index.html; \
+    } \
+}" > /etc/nginx/conf.d/default.conf
+
 # Copy the build output to the nginx html directory
 COPY --from=build-stage /app/site/build /usr/share/nginx/html
 
