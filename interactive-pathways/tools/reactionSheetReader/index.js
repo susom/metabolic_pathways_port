@@ -1,37 +1,30 @@
+const { google } = require('googleapis');
+const fs = require('fs');
+const R = require('ramda');
+const S = require('underscore.string.fp');
+const variablize = require('./utils/variablize');
+
 const config = {
   spreadSheetId: '1k8xIVzpx5aV839SHc-FzGTSHTDyLhYl8yVqyCjPj5ck',
   spreadSheetTabName: 'Jon',
   spreadSheetRange: 'A1:Z',
 };
 
-const fs = require('fs');
-const { google } = require('googleapis');
-const R = require('ramda');
-const S = require('underscore.string.fp');
-const variablize = require('./utils/variablize');
+async function authenticate() {
+  const auth = new google.auth.JWT({
+    keyFile: './credentials.json', // Path to your service account key file
+    scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+  });
 
-// Initialize Google Auth with service account credentials
-async function initializeGoogleAuth() {
   try {
-    const auth = new google.auth.GoogleAuth({
-      keyFile: './credentials.json', // Path to your service account key file
-      scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
-    });
-
-    const client = await auth.getClient();
-    console.log("Successfully connected!");
-
-    // Call the function to get substances and types
-    getSubstancesAndTypes(client);
-  } catch (err) {
-    console.error("Failed to initialize GoogleAuth:", err);
+    await auth.authorize();
+    console.log('Successfully connected!');
+    return auth;
+  } catch (error) {
+    console.error('Error connecting to Google Sheets API:', error);
   }
 }
 
-/**
- * Creates reactionList.json from the Google Sheets data
- * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
- */
 function getSubstancesAndTypes(auth) {
   const sheets = google.sheets({ version: 'v4', auth });
   sheets.spreadsheets.values.get({
@@ -55,14 +48,16 @@ function getSubstancesAndTypes(auth) {
     fs.writeFile(
         './reactionList.json',
         JSON.stringify(reactionList),
-        {
-          encoding: 'utf8',
-        },
+        { encoding: 'utf8' },
         () => console.log('Wrote reactionList.json')
     );
 
   });
 }
 
-// Initialize GoogleAuth and run the script
-initializeGoogleAuth();
+(async () => {
+  const auth = await authenticate();
+  if (auth) {
+    getSubstancesAndTypes(auth);
+  }
+})();
