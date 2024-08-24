@@ -31,8 +31,8 @@ FROM nginx:stable-alpine
 # Copy the build output to the nginx html directory
 COPY --from=build-stage /app/site/build /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
+# Expose the correct port
+EXPOSE 8080
 
 # Start nginx server
 CMD ["nginx", "-g", "daemon off;"]
