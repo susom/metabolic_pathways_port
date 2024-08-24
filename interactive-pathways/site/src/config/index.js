@@ -1,5 +1,5 @@
-export default ({
+export default {
   downloadFileName: 'pathway-screenshot.png',
-  svgEndpoint: 'svgconvert',
-  URL: "http://localhost:8888",
-});
+  svgEndpoint: process.env.SVG_ENDPOINT || 'svgconvert',
+  URL: process.env.API_URL || "http://localhost:8888",
+};
