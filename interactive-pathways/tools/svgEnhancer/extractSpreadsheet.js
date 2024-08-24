@@ -172,13 +172,13 @@ function getSubstancesAndTypes(auth) {
       () => console.log('Wrote substanceTypeCollection.json')
     );
 
-    fs.writeFile(
-      './substanceList.json',
-      JSON.stringify(substanceList),
-      {
-        encoding: 'utf8',
-      },
-      () => console.log('Wrote substanceList.json')
-    );
+    // fs.writeFile(
+    //   './substanceList.json',
+    //   JSON.stringify(substanceList),
+    //   {
+    //     encoding: 'utf8',
+    //   },
+    //   () => console.log('Wrote substanceList.json')
+    // );
   });
 }
