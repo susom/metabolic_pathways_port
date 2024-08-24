@@ -52,6 +52,7 @@ module.exports = (env, argv) => {
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(argv.mode || 'development'),
                 'process.env.API_URL': JSON.stringify(process.env.API_URL || 'http://backend:8080'),
+                'process.env.SVG_ENDPOINT': JSON.stringify(process.env.SVG_ENDPOINT || 'svgconvert'),
             }),
             ...(isProduction ? [new MiniCssExtractPlugin({
                 filename: '[name].[contenthash].css',
