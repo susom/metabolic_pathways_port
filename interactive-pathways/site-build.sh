@@ -2,42 +2,24 @@
 
 PROJ_DIR=`cd ${0%/*} && pwd -P`
 
-echo &&
-echo "Copying latest SVG file from project root." &&
-echo &&
+echo "Copying latest SVG file from project root."
 
 cd $PROJ_DIR/tools/svgEnhancer/
 
-# Check if credentials.json exists before proceeding
-if [ -f "credentials.json" ]; then
-  echo "credentials.json found, proceeding with SVG enhancement."
+echo "Creating JSON data and enhanced SVG."
 
-  echo &&
-  echo "Creating JSON data and enhanced SVG." &&
-  echo &&
+npm ci
+npm start
 
-  npm ci &&
-  npm start &&
+echo "Moving JSON data and Enhanced SVG into site project."
 
-  echo &&
-  echo "Moving JSON data and Enhanced SVG into site project." &&
-  echo &&
-
-  mv -fv $PROJ_DIR/tools/svgEnhancer/out/* $PROJ_DIR/site/src/assets/
-
-else
-  echo "credentials.json not found, skipping SVG enhancement."
-fi
+mv -fv $PROJ_DIR/tools/svgEnhancer/out/* $PROJ_DIR/site/src/assets/
 
 cd $PROJ_DIR/site/
 
-echo &&
-echo "Building site." &&
-echo &&
+echo "Building site."
 
-npm ci &&
-npm run build &&
+npm ci
+npm run build
 
-echo &&
-echo "Finished building site." &&
-echo
+echo "Finished building site."
