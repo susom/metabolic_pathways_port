@@ -1,12 +1,11 @@
-
 steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
+        # Retrieve credentials.json from Secret Manager and save it in the appropriate location
         gcloud secrets versions access latest --secret="credentials-json" > ./interactive-pathways/tools/svgEnhancer/credentials.json
-        gcloud secrets versions access latest --secret="token-json" > ./interactive-pathways/tools/svgEnhancer/token.json
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend:latest', './interactive-pathways']
