@@ -6,7 +6,7 @@ services:
       context: ./interactive-pathways
       dockerfile: Dockerfile
     ports:
-      - "88:80"
+      - "88:8080"
     depends_on:
       - backend # Ensure backend starts first
 
