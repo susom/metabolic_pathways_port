@@ -78,26 +78,26 @@ class MapComponent extends PureComponent {
 
                 // Comment out for local
                 const tag = document.getElementById(svgId);
-                const strSvg = tag.outerHTML;
+                // const strSvg = tag.outerHTML;
 
                 // Use a simplified SVG for testing purposes, not enough resources on our local to process the 2 mile long SVG code
-//                 const strSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500">
-//   <rect width="100%" height="100%" fill="lightblue" />
-//   <circle cx="250" cy="250" r="200" fill="green" />
-//   <circle cx="250" cy="250" r="150" fill="blue" />
-//   <circle cx="250" cy="250" r="100" fill="red" />
-//   <circle cx="250" cy="250" r="50" fill="yellow" />
-//   <line x1="0" y1="0" x2="500" y2="500" stroke="black" stroke-width="5"/>
-//   <line x1="0" y1="500" x2="500" y2="0" stroke="black" stroke-width="5"/>
-//   <text x="50" y="50" font-family="Arial" font-size="24" fill="black">Test SVG</text>
-//   <text x="50" y="100" font-family="Arial" font-size="20" fill="black">This is a test SVG with more elements.</text>
-//   <rect x="50" y="150" width="400" height="200" fill="orange" />
-//   <circle cx="150" cy="250" r="50" fill="purple" />
-//   <polygon points="250,60 100,400 400,400" fill="lime" />
-//   <ellipse cx="250" cy="250" rx="150" ry="80" fill="pink" />
-//   <polyline points="200,400 250,450 300,400" stroke="brown" stroke-width="4" fill="none"/>
-//   <path d="M 100 100 L 300 100 L 200 300 z" fill="none" stroke="red" stroke-width="5"/>
-// </svg>`;
+                const strSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500">
+  <rect width="100%" height="100%" fill="lightblue" />
+  <circle cx="250" cy="250" r="200" fill="green" />
+  <circle cx="250" cy="250" r="150" fill="blue" />
+  <circle cx="250" cy="250" r="100" fill="red" />
+  <circle cx="250" cy="250" r="50" fill="yellow" />
+  <line x1="0" y1="0" x2="500" y2="500" stroke="black" stroke-width="5"/>
+  <line x1="0" y1="500" x2="500" y2="0" stroke="black" stroke-width="5"/>
+  <text x="50" y="50" font-family="Arial" font-size="24" fill="black">Test SVG</text>
+  <text x="50" y="100" font-family="Arial" font-size="20" fill="black">This is a test SVG with more elements.</text>
+  <rect x="50" y="150" width="400" height="200" fill="orange" />
+  <circle cx="150" cy="250" r="50" fill="purple" />
+  <polygon points="250,60 100,400 400,400" fill="lime" />
+  <ellipse cx="250" cy="250" rx="150" ry="80" fill="pink" />
+  <polyline points="200,400 250,450 300,400" stroke="brown" stroke-width="4" fill="none"/>
+  <path d="M 100 100 L 300 100 L 200 300 z" fill="none" stroke="red" stroke-width="5"/>
+</svg>`;
 
                 console.log('Preparing to send SVG for conversion:', strSvg);
                 console.log('API URL:', `${siteConfig.URL}/${siteConfig.svgEndpoint}`);

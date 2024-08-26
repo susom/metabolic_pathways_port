@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"encoding/base64"
 	"encoding/json"
 	"io"
@@ -10,7 +9,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"time"
+	"strings"
 )
 
 type svgRequest struct {
@@ -24,6 +23,28 @@ type pngResponse struct {
 func handler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Received request to /svgconvert")
 
+	// Handle CORS
+	corsOrigins := os.Getenv("CORS_ORIGINS")
+	log.Printf("CORS_ORIGINS: %s", corsOrigins)
+
+	origin := r.Header.Get("Origin")
+	log.Printf("Request Origin: %s", origin)
+
+	if origin != "" && strings.Contains(corsOrigins, origin) {
+		log.Println("Origin allowed, setting CORS headers")
+		w.Header().Set("Access-Control-Allow-Origin", origin)
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+	} else {
+		log.Println("Origin not allowed, CORS headers not set")
+	}
+
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
+
 	var svgJson svgRequest
 	err := json.NewDecoder(r.Body).Decode(&svgJson)
 	if err != nil {
@@ -32,12 +53,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create a context with a timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
-	defer cancel()
-
-	// Command with context
-	cmd := exec.CommandContext(ctx, "rsvg-convert", "-f", "png")
+	cmd := exec.Command("rsvg-convert", "-f", "png")
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
 		log.Printf("Error creating stdin pipe: %v", err)
@@ -74,14 +90,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	sEnc := base64.StdEncoding.EncodeToString(buf.Bytes())
 
 	if err := cmd.Wait(); err != nil {
-		// Check if the error was due to timeout
-		if ctx.Err() == context.DeadlineExceeded {
-			log.Printf("Command timed out")
-			http.Error(w, "Processing SVG timed out", http.StatusGatewayTimeout)
-		} else {
-			log.Printf("Error waiting for command completion: %v", err)
-			http.Error(w, "Failed to wait for command completion", http.StatusInternalServerError)
-		}
+		log.Printf("Error waiting for command completion: %v", err)
+		http.Error(w, "Failed to wait for command completion", http.StatusInternalServerError)
 		return
 	}
 
