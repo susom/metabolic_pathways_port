@@ -21,8 +21,8 @@ const config = {
       'babel-polyfill',
       `${commonPaths.appEntry}/index.js`,
     ],
-    styles1: `${commonPaths.appEntry}/styling/main.scss`,
-    styles2: `${commonPaths.appEntry}/styling/semantic.less`,
+    styles: `${commonPaths.appEntry}/styling/main.scss`,
+    styles: `${commonPaths.appEntry}/styling/custom.scss`,
   },
   output: {
     path: commonPaths.outputPath,
@@ -30,8 +30,7 @@ const config = {
   },
   resolve: {
     alias: {
-      '../../theme.config$': path.resolve(__dirname, '../src/styling/theme.config'),
-      heading: path.resolve(__dirname, '../src/styling/heading.less'),
+      // Removing LESS-specific aliases
     },
     modules: [
       path.join(__dirname, '../src/entry'),
@@ -84,15 +83,6 @@ const config = {
             name: 'fonts/[name].[hash].[ext]'
           }
         }],
-      },
-      {
-        test: /\.less$/,
-        use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader',
-          'less-loader',
-        ],
       },
       {
         test: /\.(sa|sc|c)ss$/,

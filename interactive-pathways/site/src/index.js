@@ -16,6 +16,7 @@ import 'semantic-ui-css/semantic.min.css';
 const jss = createJss(jssPreset());
 
 import './styling/main.scss'; // Import the SCSS file here
+import './styling/custom.scss';
 
 const initialState = {};
 
