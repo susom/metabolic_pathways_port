@@ -26,7 +26,7 @@ steps:
       '--region', 'us-central1',
       '--allow-unauthenticated', 
       '--port', '8080',
-      '--set-env-vars', 'API_URL=https://interactive-pathways-api-6mfgpbmzzq-uc.a.run.app,SVG_ENDPOINT=svgconvert' 
+      '--set-env-vars', 'REACT_APP_API_URL=https://interactive-pathways-api-6mfgpbmzzq-uc.a.run.app,REACT_APP_SVG_ENDPOINT=svgconvert'
     ]
 
 options:
