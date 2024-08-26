@@ -28,6 +28,8 @@ if (!rootElement) {
     console.error('Root element not found! Rendering will fail.');
 }
 
+console.log("REACT_APP_API_URL: ", process.env.REACT_APP_API_URL, "REACT_APP_SVG_ENDPOINT: ", process.env.REACT_APP_SVG_ENDPOINT);
+
 const render = (Component) => {
     try {
         ReactDOM.render(
