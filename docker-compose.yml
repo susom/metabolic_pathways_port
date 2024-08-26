@@ -8,7 +8,10 @@ services:
     ports:
       - "88:8080"
     depends_on:
-      - backend # Ensure backend starts first
+      - backend
+    environment:
+      - API_URL=http://localhost:8888
+      - SVG_ENDPOINT=svgconvert
 
   backend:
     build:
@@ -17,4 +20,4 @@ services:
     ports:
       - "8888:8080"
     environment:
-      - ENV_VAR_NAME=production  # Add any environment variables if needed
+      - ENV_VAR_NAME=production

@@ -8,7 +8,12 @@ steps:
         gcloud secrets versions access latest --secret="credentials-json" > ./interactive-pathways/tools/svgEnhancer/credentials.json
 
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend:latest', './interactive-pathways']
+    args: [
+      'build', 
+      '-t', 
+      'us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend:latest', 
+      './interactive-pathways'
+    ]
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend:latest']
@@ -19,7 +24,9 @@ steps:
       '--image', 'us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend:latest',
       '--platform', 'managed',
       '--region', 'us-central1',
-      '--allow-unauthenticated', '--port', '8080'
+      '--allow-unauthenticated', 
+      '--port', '8080',
+      '--set-env-vars', 'API_URL=https://interactive-pathways-api-6mfgpbmzzq-uc.a.run.app,SVG_ENDPOINT=svgconvert' 
     ]
 
 options:
