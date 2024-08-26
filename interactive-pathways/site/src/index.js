@@ -4,12 +4,14 @@ import { Provider } from 'react-redux';
 
 import { create as createJss } from 'jss';
 import { createGenerateId } from 'jss';
-
 import { JssProvider } from 'react-jss';
 import jssPreset from 'jss-preset-default';
 
 import App from './pages';
 import configureStore from './redux/store'; // Use relative path
+
+// Import the precompiled Semantic UI CSS
+import 'semantic-ui-css/semantic.min.css'; 
 
 const jss = createJss(jssPreset());
 

@@ -1,9 +1,8 @@
 import React from 'react';
 import injectSheet from 'react-jss';
-import {
-  Container,
-} from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import colors from 'config/styles/colors';
+import legendImage from 'assets/images/legendImage.png'; // Importing image with ES6 syntax
 
 const styles = {
   container: {
@@ -28,26 +27,27 @@ const styles = {
 };
 
 class LegendPane extends React.Component {
-  state = { activeIndex: 0, };
+  state = { activeIndex: 0 };
 
   handleClick = (e, titleProps) => {
-    const { index, } = titleProps;
-    const { activeIndex, } = this.state;
+    const { index } = titleProps;
+    const { activeIndex } = this.state;
     const newIndex = activeIndex === index ? -1 : index;
 
-    this.setState({ activeIndex: newIndex, });
+    this.setState({ activeIndex: newIndex });
   };
 
-  render () {
+  render() {
     return (
       <Container>
         <img
-          src={require('assets/images/legendImage.png')}
+          src={legendImage} // Using the imported image
           width={260}
+          alt="Legend"
         />
       </Container>
     );
   }
-};
+}
 
 export default injectSheet(styles)(LegendPane);

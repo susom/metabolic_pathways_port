@@ -9,8 +9,7 @@ import svgMap from 'assets/map.svg.inner.html';
 import scaleCheckRect from 'config/scaleCheckRect';
 import homeConfig from './Home.config';
 import siteConfig from 'config/';
-
-const axios = require('axios');
+import axios from 'axios';
 
 const { screenShotId, svgId, zoomInId, zoomOutId } = homeConfig;
 

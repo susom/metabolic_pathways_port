@@ -19,10 +19,13 @@ export default function configureStore(initialState) {
 
   if (module.hot) {
     module.hot.accept('./modules', () => {
-      const nextRootReducer = require('./modules'); // Use .default if you use Babel 6+
-      store.replaceReducer(nextRootReducer);
+      import('./modules').then(module => {
+        const nextRootReducer = module.default; // assuming you're using Babel 6+
+        store.replaceReducer(nextRootReducer);
+      });
     });
   }
+  
 
   return store;
 }
