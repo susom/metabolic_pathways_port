@@ -6,7 +6,15 @@ steps:
     args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/backend/backend:latest']
 
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['run', 'deploy', 'interactive-pathways-api', '--image', 'us-central1-docker.pkg.dev/$PROJECT_ID/backend/backend:latest', '--platform', 'managed', '--region', 'us-central1', '--quiet']
+    args: [
+      'run', 'deploy', 'interactive-pathways-api',
+      '--image', 'us-central1-docker.pkg.dev/$PROJECT_ID/backend/backend:latest',
+      '--platform', 'managed',
+      '--region', 'us-central1',
+      '--allow-unauthenticated',
+      '--set-env-vars', 'CORS_ORIGINS=https://interactive-pathways-6mfgpbmzzq-uc.a.run.app',
+      '--quiet'
+    ]
 
 options:
   logging: CLOUD_LOGGING_ONLY
