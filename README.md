@@ -63,7 +63,7 @@ services:
 
 After cloning the repository:
 
-1. **Place `credentials.json`** file into the appropriate location:
+1. **Place `credentials.json`** (obtain from an admin) file into the appropriate location:
 
 ```
 /interactive-pathways(frontend_root)/tools/svgEnhancer/credentials.json
