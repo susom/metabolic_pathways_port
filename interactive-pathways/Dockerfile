@@ -2,27 +2,35 @@
 FROM node:16-alpine AS build-stage
 
 # Set the working directory in the container
-WORKDIR /app/site
+WORKDIR /app
 
 # Install vim
 RUN apk add --no-cache vim
 
-# Copy package files and webpack configuration first (leverage Docker caching)
-COPY site/package*.json ./
-COPY site/webpack.config.js ./
+# Copy the package files first (leverage Docker caching)
+COPY site/package*.json ./site/
+
+# Change directory to `site` before running npm ci
+WORKDIR /app/site
 
 # Install dependencies
 RUN npm ci --legacy-peer-deps
 
-# Copy the rest of the project files
-COPY site/ ./
+# Return to the main app directory
+WORKDIR /app
 
-# Set build arguments to environment variables (for webpack)
+# Copy the rest of the project files
+COPY . .
+
+# Set build arguments to environment variables
 ARG REACT_APP_API_URL
 ARG REACT_APP_SVG_ENDPOINT
 
-# Run the build script with the build arguments
-RUN REACT_APP_API_URL=$REACT_APP_API_URL REACT_APP_SVG_ENDPOINT=$REACT_APP_SVG_ENDPOINT npm run build
+# Ensure the build script has execute permissions
+RUN chmod +x /app/site-build.sh
+
+# Run the site-build.sh script with the build arguments
+RUN REACT_APP_API_URL=$REACT_APP_API_URL REACT_APP_SVG_ENDPOINT=$REACT_APP_SVG_ENDPOINT /bin/sh /app/site-build.sh
 
 # Use a second stage with a smaller image for serving the app
 FROM nginx:stable-alpine
