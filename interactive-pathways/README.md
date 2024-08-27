@@ -1,58 +1,22 @@
-# Up and Running
+## Dockerized Setup and Deployment
 
-## Install
+The application has been fully dockerized, with all dependencies managed within the Docker container. There's no need to install anything locally on your machine. Deployment is fully managed by Cloud Build and Cloud Run on GCP, requiring no manual steps beyond updating the Docker image.
 
-### node.js
+### Credentials for Google Sheets API
 
-Mac homebrew install
-```sh
-brew install node
+When building the Dockerfile, it runs `./site-build.sh`, which requires a `credentials.json` (Google service account) to access the Google Sheets API. This file must be placed in:
 ```
-https://nodejs.org/en/download/package-manager/#macos
-
-*Recommended install via NVM*
-```sh
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-
-nvm install node
-```
-https://github.com/nvm-sh/nvm#install-script
-
-## Build site
-This generates all site assets from the Google sheet and `map.svg` file. Also creates a production site in `app/public`.
-```sh
-./site-build.sh
+/interactive-pathways(frontend_root)/tools/svgEnhancer/credentials.json
 ```
 
-## Run project
+## Tools
 
-### Start local site
-```sh
-./site-build.sh
-cd site/
-npm start
-```
+We have a small collection of tools to process the SVG and create the JSON assets used on the site.
 
-### Install packages (if needed)
-```sh
-npm ci
-```
+### `svgEnhancer`
 
-# Tools
-We have a small collection of tools to process the SVG and create the JSON assets we're using on the site. Removed unused tools, see commit ID db447e1 to see them.
+This tool processes the [Google Sheet](https://docs.google.com/spreadsheets/d/1k8xIVzpx5aV839SHc-FzGTSHTDyLhYl8yVqyCjPj5ck/edit?gid=52046781#gid=52046781) that Tina edits, scrapes text data from the `map.svg`, and combines these into JSON assets and an enhanced `map.svg.inner.html` file.
 
-## `svgEnhancer`
-This tool processes the Google sheets that Tina edits, scrapes text data from the `map.svg`, and combines these into JSON assets and an enhanced `map.svg.inner.html` file.
-```sh
-cd tools/svgEnhancer
-node index.js
-```
+### `reactionSheetReader`
 
-## `reactionSheetReader`
-This tool reads and processes data from our reaction sheet. Currently, we aren't using this tool for any production data, but we may use it in future phases of the project.
-```sh
-cd tools/reactionSheetReader
-node index.js
-```
-
-# Testing
+This tool reads and processes data from our reaction sheet. Currently, it is not used for production data but may be utilized in future phases of the project.
