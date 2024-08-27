@@ -51,8 +51,8 @@ module.exports = (env, argv) => {
             }),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(argv.mode || 'development'),
-                'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'http://localhost:8888'),
-                'process.env.REACT_APP_SVG_ENDPOINT': JSON.stringify(process.env.REACT_APP_SVG_ENDPOINT || 'svgconvert'),
+                'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL),
+                'process.env.REACT_APP_SVG_ENDPOINT': JSON.stringify(process.env.REACT_APP_SVG_ENDPOINT),
             }),
             ...(isProduction ? [new MiniCssExtractPlugin({
                 filename: '[name].[contenthash].css',

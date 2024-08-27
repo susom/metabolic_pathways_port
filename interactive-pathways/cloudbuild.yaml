@@ -9,9 +9,11 @@ steps:
 
   - name: 'gcr.io/cloud-builders/docker'
     args: [
-      'build', 
-      '-t', 
-      'us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend:latest', 
+      'build',
+      '-t',
+      'us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend:latest',
+      '--build-arg', 'REACT_APP_API_URL=https://interactive-pathways-api-6mfgpbmzzq-uc.a.run.app',
+      '--build-arg', 'REACT_APP_SVG_ENDPOINT=svgconvert',
       './interactive-pathways'
     ]
 
@@ -24,9 +26,8 @@ steps:
       '--image', 'us-central1-docker.pkg.dev/$PROJECT_ID/frontend/frontend:latest',
       '--platform', 'managed',
       '--region', 'us-central1',
-      '--allow-unauthenticated', 
-      '--port', '8080',
-      '--set-env-vars', 'REACT_APP_API_URL=https://interactive-pathways-api-6mfgpbmzzq-uc.a.run.app,REACT_APP_SVG_ENDPOINT=svgconvert'
+      '--allow-unauthenticated',
+      '--port', '8080'
     ]
 
 options:

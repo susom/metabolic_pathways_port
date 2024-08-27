@@ -5,13 +5,13 @@ services:
     build:
       context: ./interactive-pathways
       dockerfile: Dockerfile
+      args:
+        - REACT_APP_API_URL=http://localhost:8888
+        - REACT_APP_SVG_ENDPOINT=svgconvert
     ports:
       - "88:8080"
     depends_on:
       - backend
-    environment:
-      - REACT_APP_API_URL=http://localhost:8888
-      - REACT_APP_SVG_ENDPOINT=svgconvert
 
   backend:
     build:
