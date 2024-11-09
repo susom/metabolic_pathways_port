@@ -1,4 +1,5 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { composeWithDevToolsDevelopmentOnly } from '@redux-devtools/extension';
 import { routerMiddleware } from 'react-router-redux';
 import { createBrowserHistory } from 'history';
 import reducers from './modules';
@@ -6,7 +7,11 @@ import reducers from './modules';
 const history = createBrowserHistory();
 const routerMW = routerMiddleware(history);
 
-const enhancer = (...middleware) => applyMiddleware(...middleware);
+const composeEnhancers = composeWithDevToolsDevelopmentOnly({
+  trace: true,
+});
+
+const enhancer = (...middleware) => composeEnhancers(applyMiddleware(...middleware));
 
 export default function configureStore(initialState) {
   const rootReducer = combineReducers(reducers);

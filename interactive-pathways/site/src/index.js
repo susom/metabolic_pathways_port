@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 
 import { create as createJss } from 'jss';
@@ -32,13 +33,13 @@ console.log("REACT_APP_API_URL: ", process.env.REACT_APP_API_URL, "REACT_APP_SVG
 
 const render = (Component) => {
     try {
-        ReactDOM.render(
+        const root = createRoot(rootElement);
+        root.render(
             <JssProvider jss={jss} generateId={createGenerateId()}>
                 <Provider store={store}>
                     <Component />
                 </Provider>
-            </JssProvider>,
-            rootElement
+            </JssProvider>
         );
     } catch (error) {
         console.error('Error during rendering:', error);

@@ -149,7 +149,7 @@ class FocusPane extends PureComponent {
       R.tap(
         R.forEach(
           R.ifElse(
-            R.propEq('willShowText', true),
+            R.propEq(true, 'willShowText'),
             R.compose(
               R.forEach(element => element.style.opacity = 1), // eslint-disable-line no-return-assign
               ({ substanceId, }) =>
